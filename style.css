@@ -1,473 +1,213 @@
-/* VARIÁVEIS GLOBAIS */
-:root {
-    --primary: #1e3a8a;
-    --primary-light: #3b82f6;
-    --bg: #f8fafc;
-    --surface: #ffffff;
-    --text: #0f172a;
-    --text-muted: #64748b;
-    --border: #e2e8f0;
-    --success: #10b981;
-    --warning: #f59e0b;
-    --danger: #ef4444;
-    --info: #0ea5e9;
-    --radius: 8px;
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+// ============================================
+// TAB NAVIGATION
+// ============================================
+const tabs = document.querySelectorAll('.tab-btn');
+const contents = document.querySelectorAll('.tab-content');
+
+tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        const target = tab.getAttribute('data-tab');
+        
+        tabs.forEach(t => t.classList.remove('active'));
+        contents.forEach(c => c.classList.remove('active'));
+        
+        tab.classList.add('active');
+        document.getElementById(target).classList.add('active');
+        
+        // Scroll to top of main content smoothly
+        window.scrollTo({ top: document.querySelector('.tab-nav-wrapper').offsetTop, behavior: 'smooth' });
+    });
+});
+
+// ============================================
+// SELECTOR DE TIPO DE RÉU (DANOS MORAIS)
+// ============================================
+function selectReuType(type) {
+    // Remove all selections
+    document.querySelectorAll('.radio-option').forEach(opt => {
+        opt.classList.remove('selected');
+    });
+    
+    // Add selection to clicked option
+    event.currentTarget.classList.add('selected');
+    
+    // Check the radio
+    event.currentTarget.querySelector('input[type="radio"]').checked = true;
+    
+    // Hide all dynamic content
+    document.querySelectorAll('.dynamic-content').forEach(content => {
+        content.classList.remove('active');
+    });
+    
+    // Show selected content
+    document.getElementById(`content-${type}`).classList.add('active');
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+// ============================================
+// FLUXOGRAMA INTERATIVO
+// ============================================
+let flowSelections = {
+    step1: null,
+    step2: null,
+    step3: null
+};
 
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.6;
-    font-size: 15px;
-}
-
-/* HEADER */
-header {
-    background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
-    color: white;
-    padding: 2rem 1.5rem;
-    text-align: center;
-    box-shadow: var(--shadow);
-}
-header h1 { font-size: 1.8rem; margin-bottom: 0.5rem; font-weight: 800; }
-header p { font-size: 1rem; opacity: 0.9; max-width: 800px; margin: 0 auto; }
-.badges { margin-top: 1rem; display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
-.badge {
-    background: rgba(255,255,255,0.2);
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    backdrop-filter: blur(4px);
-}
-
-/* TABS NAVIGATION */
-.tab-nav-wrapper {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-.tab-nav {
-    display: flex;
-    overflow-x: auto;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
-    scrollbar-width: thin;
-}
-.tab-nav::-webkit-scrollbar { height: 4px; }
-.tab-nav::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 4px; }
-
-.tab-btn {
-    background: none;
-    border: none;
-    padding: 1rem 1.2rem;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--text-muted);
-    cursor: pointer;
-    white-space: nowrap;
-    border-bottom: 3px solid transparent;
-    transition: all 0.2s;
-}
-.tab-btn:hover { color: var(--primary); background: #f1f5f9; }
-.tab-btn.active {
-    color: var(--primary);
-    border-bottom-color: var(--primary);
+function selectFlowStep(step, value, element) {
+    // Remove selection from siblings
+    const parent = element.parentElement;
+    parent.querySelectorAll('.flow-option').forEach(opt => {
+        opt.classList.remove('selected');
+    });
+    
+    // Add selection to clicked element
+    element.classList.add('selected');
+    
+    // Store selection
+    flowSelections[step] = value;
+    
+    // Show result for this step
+    const resultDiv = document.getElementById(`result-${step}`);
+    const textDiv = document.getElementById(`text-${step}`);
+    
+    resultDiv.classList.add('active');
+    
+    // Update text based on selection
+    if (step === 'step1') {
+        if (value === 'previdenciario') {
+            textDiv.textContent = 'Natureza PREVIDENCIÁRIA selecionada - Aplicará INPC (cor/mon) + (Selic - INPC) (juros)';
+        } else if (value === 'tributario') {
+            textDiv.textContent = 'Natureza TRIBUTÁRIA selecionada - Aplicará SELIC (única)';
+        } else {
+            textDiv.textContent = 'Natureza GERAL/LOAS selecionada - Aplicará IPCA + (Selic - IPCA)';
+        }
+    } else if (step === 'step2') {
+        if (value === 'pre') {
+            textDiv.textContent = 'Fase PRÉ-REQUISITÓRIA - Aplicam-se regras do Acórdão CJF 0882268/2026 (Arts. 389 e 406 CC)';
+        } else {
+            textDiv.textContent = 'Fase PÓS-REQUISITÓRIA - Aplica-se EC 136/2025 (IPCA + 2% a.a. simples)';
+        }
+    } else if (step === 'step3') {
+        if (value === 'sim') {
+            textDiv.textContent = 'Há parcelas anteriores a 12/2021 - NECESSÁRIA consolidação e separação de juros';
+        } else {
+            textDiv.textContent = 'Não há parcelas anteriores - Calcular normalmente com índices vigentes';
+        }
+        
+        // Show final result if all steps completed
+        if (flowSelections.step1 && flowSelections.step2 && flowSelections.step3) {
+            showFinalResultFlow();
+        }
+    }
 }
 
-/* MAIN CONTENT */
-main {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1.5rem;
+function showFinalResultFlow() {
+    const finalDiv = document.getElementById('final-result-flow');
+    const contentDiv = document.getElementById('final-content-flow');
+    
+    let correcao = '';
+    let juros = '';
+    let base = '';
+    let observacao = '';
+    
+    // Determine indices based on selections
+    if (flowSelections.step2 === 'pre') {
+        // Pré-requisitório
+        if (flowSelections.step1 === 'previdenciario') {
+            correcao = 'INPC';
+            juros = 'Taxa Legal (Selic - INPC)';
+            base = 'Art. 41-A Lei 8.213/1991 + Arts. 389 e 406 CC';
+        } else if (flowSelections.step1 === 'tributario') {
+            correcao = 'SELIC';
+            juros = 'SELIC (engloba tudo)';
+            base = 'Arts. 161 e 167 CTN + Lei 9.250/1995';
+        } else {
+            correcao = 'IPCA';
+            juros = 'Taxa Legal (Selic - IPCA)';
+            base = 'Arts. 389 e 406 CC (Lei 14.905/2024)';
+        }
+    } else {
+        // Pós-requisitório
+        correcao = 'IPCA';
+        juros = '2% a.a. simples (teto: Selic)';
+        base = 'Art. 3º EC 113/2021 (redação EC 136/2025)';
+    }
+    
+    observacao = '';
+    if (flowSelections.step3 === 'sim') {
+        observacao = '<br><br><strong>⚠️ ATENÇÃO:</strong> Necessária consolidação em dez/2021 e separação de "Juros até 12/2021" e "Juros Selic" na planilha.';
+    }
+    
+    contentDiv.innerHTML = `
+        <table style="width: 100%; margin-top: 15px;">
+            <tr>
+                <td style="padding: 10px; background: #f8fafc; font-weight: 600;">Natureza:</td>
+                <td style="padding: 10px;">${flowSelections.step1 === 'previdenciario' ? 'Previdenciário' : flowSelections.step1 === 'tributario' ? 'Tributário' : 'Geral/LOAS'}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; background: #f8fafc; font-weight: 600;">Fase:</td>
+                <td style="padding: 10px;">${flowSelections.step2 === 'pre' ? 'Pré-Requisitório' : 'Pós-Requisitório'}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; background: #f8fafc; font-weight: 600;">Correção Monetária:</td>
+                <td style="padding: 10px; color: #059669; font-weight: 600;">${correcao}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; background: #f8fafc; font-weight: 600;">Juros de Mora:</td>
+                <td style="padding: 10px; color: #059669; font-weight: 600;">${juros}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; background: #f8fafc; font-weight: 600;">Base Legal:</td>
+                <td style="padding: 10px; font-size: 0.9em;">${base}</td>
+            </tr>
+        </table>
+        ${observacao}
+    `;
+    
+    finalDiv.style.display = 'block';
+    finalDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-.tab-content { display: none; animation: fadeIn 0.3s ease; }
-.tab-content.active { display: block; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+// ============================================
+// CHECKLIST LOCAL STORAGE
+// ============================================
+const checkboxes = document.querySelectorAll('.checklist input[type="checkbox"]');
 
-h2 {
-    font-size: 1.5rem;
-    color: var(--primary);
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--border);
-}
-h3 { font-size: 1.2rem; margin: 1.5rem 0 0.8rem; color: #334155; }
-h4 { font-size: 1.1rem; margin: 1.2rem 0 0.6rem; color: #475569; }
-p { margin-bottom: 1rem; }
-ul, ol { margin-left: 2rem; margin-bottom: 1rem; }
+// Load state
+checkboxes.forEach(cb => {
+    const id = cb.id;
+    if (localStorage.getItem(id) === 'true') {
+        cb.checked = true;
+        cb.closest('li').classList.add('checked');
+    }
+    
+    cb.addEventListener('change', () => {
+        localStorage.setItem(id, cb.checked);
+        if (cb.checked) {
+            cb.closest('li').classList.add('checked');
+        } else {
+            cb.closest('li').classList.remove('checked');
+        }
+    });
+});
 
-/* MANUAL REFERENCE BADGE */
-.ref {
-    display: inline-block;
-    background: #e0f2fe;
-    color: #0369a1;
-    font-size: 0.75rem;
-    font-weight: 700;
-    padding: 0.2rem 0.6rem;
-    border-radius: 4px;
-    margin-left: 0.5rem;
-    vertical-align: middle;
-}
+// ============================================
+// BACK TO TOP BUTTON
+// ============================================
+const backToTopBtn = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+        backToTopBtn.style.display = 'flex';
+    } else {
+        backToTopBtn.style.display = 'none';
+    }
+});
+backToTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
 
-/* TABLES */
-.table-wrapper { overflow-x: auto; margin: 1rem 0 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow); }
-table { width: 100%; border-collapse: collapse; background: var(--surface); font-size: 0.9rem; }
-th { background: #f1f5f9; color: var(--primary); font-weight: 700; text-align: left; padding: 0.8rem; border-bottom: 2px solid var(--border); }
-td { padding: 0.8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
-tr:last-child td { border-bottom: none; }
-tr:hover td { background: #f8fafc; }
-tr.highlight-row { background: #fef3c7; }
-tr.highlight-row:hover { background: #fde68a; }
-tr.total-row { background: #dbeafe; font-weight: 700; }
-
-/* CALLOUT BOXES */
-.callout {
-    padding: 1rem 1.2rem;
-    border-radius: var(--radius);
-    margin: 1.5rem 0;
-    border-left: 5px solid;
-    background: #f8fafc;
-}
-.callout-title { font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
-.callout.warning { border-color: var(--warning); background: #fffbeb; }
-.callout.warning .callout-title { color: #b45309; }
-.callout.info { border-color: var(--info); background: #f0f9ff; }
-.callout.info .callout-title { color: #0369a1; }
-.callout.danger { border-color: var(--danger); background: #fef2f2; }
-.callout.danger .callout-title { color: #b91c1c; }
-.callout.success { border-color: var(--success); background: #f0fdf4; }
-.callout.success .callout-title { color: #047857; }
-
-/* SELECTOR (DANOS MORAIS) */
-.selector-container {
-    background: #f8fafc;
-    border-radius: 15px;
-    padding: 2rem;
-    margin: 1.5rem 0;
-    border: 2px solid var(--border);
-}
-.selector-label {
-    font-weight: 600;
-    color: #334155;
-    margin-bottom: 1rem;
-    display: block;
-    font-size: 1.1em;
-}
-.radio-group {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-.radio-option {
-    display: flex;
-    align-items: center;
-    padding: 1.5rem;
-    background: white;
-    border: 2px solid var(--border);
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-.radio-option:hover {
-    border-color: var(--primary-light);
-    transform: translateX(5px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
-}
-.radio-option input[type="radio"] {
-    width: 24px;
-    height: 24px;
-    margin-right: 15px;
-    cursor: pointer;
-    accent-color: var(--primary-light);
-}
-.radio-option.selected {
-    border-color: var(--primary-light);
-    background: #eff6ff;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
-}
-.radio-content h3 {
-    color: var(--primary);
-    margin-bottom: 0.3rem;
-    font-size: 1.1rem;
-}
-.radio-content p {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    margin: 0;
-}
-
-/* DYNAMIC CONTENT */
-.dynamic-content {
-    display: none;
-    animation: fadeIn 0.5s ease;
-}
-.dynamic-content.active {
-    display: block;
-}
-
-/* INFO BOXES */
-.info-box {
-    background: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-left: 5px solid;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-}
-.info-box.fazenda {
-    border-left-color: var(--success);
-}
-.info-box.nao-fazenda {
-    border-left-color: var(--warning);
-}
-.info-box h3 {
-    color: var(--primary);
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-/* REFERENCE BOX */
-.reference {
-    background: #eff6ff;
-    border-left: 4px solid var(--primary-light);
-    padding: 1rem;
-    margin-top: 1rem;
-    border-radius: 5px;
-    font-size: 0.9em;
-    color: #1e40af;
-}
-
-/* COMPARISON BOX */
-.comparison-box {
-    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-    border-radius: 15px;
-    padding: 2rem;
-    margin: 2rem 0;
-    border: 2px solid #bae6fd;
-}
-.comparison-box h3 {
-    color: #0369a1;
-    margin-bottom: 1.5rem;
-    text-align: center;
-    font-size: 1.3em;
-}
-.comparison-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-}
-.comparison-item {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-.comparison-item h4 {
-    color: var(--primary);
-    margin-bottom: 0.8rem;
-    padding-bottom: 0.8rem;
-    border-bottom: 2px solid var(--border);
-}
-.comparison-item ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-.comparison-item li {
-    padding: 0.5rem 0;
-    padding-left: 1.5rem;
-    position: relative;
-    color: #475569;
-}
-.comparison-item li::before {
-    content: "✓";
-    position: absolute;
-    left: 0;
-    color: var(--success);
-    font-weight: bold;
-}
-
-/* FLOWCHART INTERACTIVE */
-.flowchart-interactive {
-    background: #f8fafc;
-    border-radius: 15px;
-    padding: 2.5rem;
-    margin: 2rem 0;
-}
-.flowchart-interactive h3 {
-    text-align: center;
-    color: var(--primary);
-    margin-bottom: 2rem;
-    font-size: 1.4em;
-}
-.flow-step {
-    background: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    border: 2px solid var(--border);
-    transition: all 0.3s ease;
-}
-.flow-step:hover {
-    border-color: var(--primary-light);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-}
-.flow-step h4 {
-    color: var(--primary);
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-}
-.step-number {
-    background: var(--primary-light);
-    color: white;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-}
-.flow-options {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-top: 1rem;
-}
-.flow-option {
-    flex: 1;
-    min-width: 200px;
-    padding: 1rem;
-    background: #f1f5f9;
-    border: 2px solid transparent;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-}
-.flow-option:hover {
-    border-color: var(--primary-light);
-    background: #eff6ff;
-}
-.flow-option.selected {
-    border-color: var(--success);
-    background: #f0fdf4;
-}
-.flow-result {
-    display: none;
-    margin-top: 1rem;
-    padding: 1rem;
-    background: #f0fdf4;
-    border-left: 4px solid var(--success);
-    border-radius: 8px;
-    animation: slideIn 0.3s ease;
-}
-.flow-result.active {
-    display: block;
-}
-@keyframes slideIn {
-    from { opacity: 0; transform: translateX(-20px); }
-    to { opacity: 1; transform: translateX(0); }
-}
-.flow-result h5 {
-    color: #047857;
-    margin-bottom: 0.5rem;
-}
-
-/* CHECKLIST */
-.checklist { list-style: none; margin-left: 0; }
-.checklist li {
-    background: var(--surface);
-    padding: 0.8rem 1rem;
-    border-radius: var(--radius);
-    margin-bottom: 0.5rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    transition: all 0.2s;
-}
-.checklist li.checked { background: #f0fdf4; text-decoration: line-through; color: var(--text-muted); }
-.checklist input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--success); cursor: pointer; }
-.checklist label { cursor: pointer; flex: 1; }
-
-/* CODE / FORMULA */
-code, .formula {
-    background: #1e293b;
-    color: #e2e8f0;
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
-    font-family: "Courier New", monospace;
-    font-size: 0.9em;
-}
-.formula-block {
-    background: #1e293b;
-    color: #e2e8f0;
-    padding: 1.5rem;
-    border-radius: var(--radius);
-    font-family: "Courier New", monospace;
-    overflow-x: auto;
-    margin: 1rem 0;
-    line-height: 1.8;
-    white-space: pre;
-}
-
-/* FOOTER */
-footer {
-    text-align: center;
-    padding: 2rem;
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    border-top: 1px solid var(--border);
-    margin-top: 3rem;
-}
-
-/* BACK TO TOP */
-#backToTop {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    background: var(--primary);
-    color: white;
-    border: none;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    font-size: 1.5rem;
-    cursor: pointer;
-    box-shadow: var(--shadow);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.2s;
-    z-index: 200;
-}
-#backToTop:hover { transform: scale(1.1); }
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-    header h1 { font-size: 1.4rem; }
-    .tab-btn { padding: 0.8rem 1rem; font-size: 0.85rem; }
-    main { padding: 0 1rem; }
-    .comparison-grid { grid-template-columns: 1fr; }
-    .flow-options { flex-direction: column; }
-    .flow-option { min-width: 100%; }
-    .selector-container { padding: 1.5rem; }
-    .radio-option { padding: 1rem; }
-}
+// ============================================
+// INICIALIZAÇÃO
+// ============================================
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Manual de Cálculos carregado com sucesso!');
+});
