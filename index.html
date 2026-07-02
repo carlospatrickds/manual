@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Cálculos CJF - Atualização 2026</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Mobile -->
+    <header class="mobile-header">
+        <h1>Manual de Cálculos CJF</h1>
+        <button id="menu-toggle">☰ Menu</button>
+    </header>
+
+    <div class="container">
+        <!-- Menu Lateral (Tabs) -->
+        <nav class="sidebar" id="sidebar">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Buscar tema, artigo...">
+            </div>
+            <ul class="tab-list">
+                <li class="tab-btn active" data-target="tab-visao-geral">
+                    <strong>Visão Geral</strong><br>
+                    <small>Regra geral pós-EC 136/2025</small>
+                </li>
+                <li class="tab-btn" data-target="tab-previdenciario">
+                    <strong>Previdenciário</strong><br>
+                    <small>INPC + (Selic - INPC)</small>
+                </li>
+                <li class="tab-btn" data-target="tab-tributario">
+                    <strong>Tributário</strong><br>
+                    <small>Selic integral</small>
+                </li>
+                <li class="tab-btn" data-target="tab-desapropriacao">
+                    <strong>Desapropriação</strong><br>
+                    <small>Fim dos juros compensatórios</small>
+                </li>
+                <li class="tab-btn" data-target="tab-fluxograma">
+                    <strong>Fluxo Decisório</strong><br>
+                    <small>Guiado passo-a-passo</small>
+                </li>
+                <li class="tab-btn" data-target="tab-12-checklist">
+                    <strong>Checklist (Aba 12)</strong><br>
+                    <small>Antes, durante e depois</small>
+                </li>
+            </ul>
+            <div class="footer-note">
+                Atualizado: Acórdão CJF 0882268<br>
+                Pronto para GitHub Pages
+            </div>
+        </nav>
+
+        <!-- Área de Conteúdo Principal -->
+        <main class="main-content">
+            
+            <!-- ABA 1: Visão Geral -->
+            <section id="tab-visao-geral" class="tab-content active">
+                <span class="badge ref">Item 4.2.1 e 4.2.2</span>
+                <h2>A anatomia de uma condenação contra a Fazenda</h2>
+                <p>O Acórdão CJF 0882268/2026 definiu o cenário pós-EC 136/2025, preenchendo a lacuna normativa da fase pré-requisitório com o Código Civil (Lei 14.905/2024).</p>
+
+                <div class="card full-width alert-card">
+                    <span class="badge warning">Marco Temporal: 10/09/2025</span>
+                    <p>A EC 136/2025 restringiu o regime da Selic única (EC 113/2021) <strong>apenas à fase pós-requisitório</strong>. Na fase pré-requisitório, volta a valer a regra geral do Código Civil ou regras especiais não revogadas.</p>
+                </div>
+
+                <h3>Regra Geral a partir de 10/09/2025 (Fase de Conhecimento/Liquidação)</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Natureza do Crédito</th>
+                                <th>Correção Monetária</th>
+                                <th>Juros de Mora</th>
+                                <th>Base Legal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Regra Geral (Condenatórias)</strong></td>
+                                <td>IPCA</td>
+                                <td>Taxa Legal (Selic - IPCA)</td>
+                                <td>Arts. 389 e 406 CC (Lei 14.905/2024)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Previdenciário</strong></td>
+                                <td>INPC</td>
+                                <td>Taxa Legal (Selic - INPC)</td>
+                                <td>Art. 41-A Lei 8.213/91 + CC</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tributário</strong></td>
+                                <td>Selic</td>
+                                <td>Englobado na Selic</td>
+                                <td>Arts. 161 e 167 CTN</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 style="margin-top: 30px;">Fase Pós-Requisitório (Todas as matérias)</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Correção Monetária</th>
+                                <th>Juros de Mora</th>
+                                <th>Base Legal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>IPCA</td>
+                                <td>2% a.a. simples (Teto: Selic)</td>
+                                <td>Art. 3º EC 113/2021 (Redação EC 136/2025)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ABA 2: Previdenciário -->
+            <section id="tab-previdenciario" class="tab-content">
+                <span class="badge ref">Item 4.3</span>
+                <h2>Débitos Previdenciários</h2>
+                <p>Por haver norma especial não revogada, os créditos previdenciários não seguem o IPCA na fase pré-requisitório.</p>
+                
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3>Correção Monetária</h3>
+                        <p><strong>INPC</strong> (Prevalência do art. 41-A da Lei 8.213/1991).</p>
+                    </div>
+                    <div class="card">
+                        <h3>Juros de Mora</h3>
+                        <p><strong>Selic - INPC</strong> (Taxa legal adaptada ao indexador previdenciário para manter a coerência sistêmica).</p>
+                    </div>
+                </div>
+
+                <div class="card full-width">
+                    <span class="badge warning">Tema 1.207 STJ - Inclusão Inédita</span>
+                    <h3>Compensação de Benefícios Pagos Administrativamente</h3>
+                    <p>A compensação deve ser feita <strong>mês a mês</strong>, no limite do valor correspondente ao título judicial daquela competência. É estritamente vedada a apuração de valor mensal ou final negativo ao beneficiário (evita-se execução invertida).</p>
+                </div>
+            </section>
+
+            <!-- ABA 3: Tributário -->
+            <section id="tab-tributario" class="tab-content">
+                <span class="badge ref">Item 4.4</span>
+                <h2>Repetição de Indébito Tributário</h2>
+                <p>Para a esfera tributária, não houve alteração substancial na fase de conhecimento, pois o CTN já previa a Selic.</p>
+                
+                <div class="card full-width alert-card">
+                    <p><strong>Fase Pré-Requisitório:</strong> Aplica-se a <strong>Selic integral</strong> (engloba juros e correção). Base: Arts. 161 e 167 do CTN e Lei 9.250/1995. Normas especiais nunca revogadas.</p>
+                    <br>
+                    <p><strong>Atenção ao Pós-Requisitório:</strong> Após a expedição do precatório/RPV, mesmo o tributário passa para a regra da EC 136/2025 (IPCA + 2% a.a. limitados à Selic).</p>
+                </div>
+            </section>
+
+            <!-- ABA 4: Desapropriação -->
+            <section id="tab-desapropriacao" class="tab-content">
+                <span class="badge ref">Item 4.5 e 4.6</span>
+                <h2>Desapropriações (Diretas e Indiretas)</h2>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Encargo</th>
+                                <th>Regra Pós 10/09/2025 (Pré-Requisitório)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Correção Monetária</td>
+                                <td>IPCA</td>
+                            </tr>
+                            <tr>
+                                <td>Juros Moratórios</td>
+                                <td>Taxa Legal (Selic - IPCA)</td>
+                            </tr>
+                            <tr>
+                                <td>Juros Compensatórios</td>
+                                <td><strong>Extintos.</strong> A EC 113/2021 suprimiu tacitamente e a EC 136/2025 não restaurou o regime (vedada repristinação tácita).</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ABA 5: Fluxograma -->
+            <section id="tab-fluxograma" class="tab-content">
+                <h2>Fluxo Decisório de Cálculos</h2>
+                <p>Identifique os índices aplicáveis respondendo às perguntas abaixo:</p>
+                
+                <!-- Fluxograma 100% CSS -->
+                <div class="flowchart">
+                    <div class="flow-node">1. Em qual fase o processo está?</div>
+                    
+                    <div class="flow-split">
+                        <div class="flow-branch">
+                            <div class="flow-arrow"></div>
+                            <div class="flow-node highlight">Fase Pré-Requisitório</div>
+                            <div class="flow-arrow"></div>
+                            <div class="flow-node">Qual a natureza da dívida?</div>
+                            
+                            <div class="flow-split">
+                                <div class="flow-branch">
+                                    <div class="flow-arrow"></div>
+                                    <div class="flow-node highlight">Previdenciária</div>
+                                    <div class="flow-arrow"></div>
+                                    <div class="flow-node result">INPC + (Selic - INPC)</div>
+                                </div>
+                                <div class="flow-branch">
+                                    <div class="flow-arrow"></div>
+                                    <div class="flow-node highlight">Tributária</div>
+                                    <div class="flow-arrow"></div>
+                                    <div class="flow-node result">Selic Integral</div>
+                                </div>
+                                <div class="flow-branch">
+                                    <div class="flow-arrow"></div>
+                                    <div class="flow-node highlight">Regra Geral / Outras</div>
+                                    <div class="flow-arrow"></div>
+                                    <div class="flow-node result">IPCA + (Selic - IPCA)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flow-branch">
+                            <div class="flow-arrow"></div>
+                            <div class="flow-node highlight">Fase Pós-Requisitório</div>
+                            <div class="flow-arrow"></div>
+                            <div class="flow-node result">IPCA + Juros 2% a.a.<br><small>(Limitado à Selic)</small></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ABA 6: Checklist Interativo -->
+            <section id="tab-12-checklist" class="tab-content">
+                <span class="badge ref">Prática</span>
+                <h2>Checklist de Auditoria de Cálculos</h2>
+                <p>O progresso abaixo é salvo automaticamente no seu navegador (localStorage).</p>
+                
+                <div class="checklist-container" id="calc-checklist">
+                    <label class="check-item">
+                        <input type="checkbox" id="chk1">
+                        <span class="checkmark"></span>
+                        Verificar se a data do cálculo ultrapassa 10/09/2025 para aplicar a EC 136/2025.
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" id="chk2">
+                        <span class="checkmark"></span>
+                        Nas ações previdenciárias, garantir que a compensação administrativa foi limitada ao valor da competência (Tema 1.207 STJ).
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" id="chk3">
+                        <span class="checkmark"></span>
+                        Confirmar que NÃO estão sendo aplicados juros compensatórios em desapropriações após a vigência da EC 113.
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" id="chk4">
+                        <span class="checkmark"></span>
+                        Nos juros legais (CC art. 406), garantir que a fórmula usada é estritamente (Selic - Indexador).
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" id="chk5">
+                        <span class="checkmark"></span>
+                        Para fase de precatório, checar se a taxa de juros simples de 2% a.a. não ultrapassou a Selic do período.
+                    </label>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Botão Voltar ao Topo -->
+    <button id="back-to-top" title="Voltar ao topo">↑</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
