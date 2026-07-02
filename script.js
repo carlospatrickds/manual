@@ -1,38 +1,31 @@
+// Variável de controle de regime ativo na Tab 3 (Danos Morais)
+let currentRegime = 'fazenda';
+
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Lógica de Navegação das Abas (Tabs)
+    
+    // Lógica das Abas (Sidebar Navigation)
     const tabBtns = document.querySelectorAll('.tab-btn');
     const tabContents = document.querySelectorAll('.tab-content');
-    const sidebar = document.getElementById('sidebar');
-    const menuToggle = document.getElementById('menu-toggle');
 
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            // Remove classe active de todos
             tabBtns.forEach(b => b.classList.remove('active'));
             tabContents.forEach(c => c.classList.remove('active'));
 
-            // Adiciona classe active no selecionado
             btn.classList.add('active');
             const targetId = btn.getAttribute('data-target');
-            document.getElementById(targetId).classList.add('active');
-
-            // No mobile, fecha o menu ao clicar em uma aba
-            if (window.innerWidth <= 768) {
-                sidebar.classList.remove('open');
+            
+            const targetContent = document.getElementById(targetId);
+            if(targetContent) {
+                targetContent.classList.add('active');
             }
-            // Retorna ao topo ao trocar de aba
+
+            // Scroll to top upon tab switch
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     });
 
-    // 2. Menu Mobile Toggle
-    if (menuToggle) {
-        menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('open');
-        });
-    }
-
-    // 3. Sistema de Busca Simples no Menu
+    // Menu search filter
     const searchInput = document.getElementById('searchInput');
     searchInput.addEventListener('input', (e) => {
         const filter = e.target.value.toLowerCase();
@@ -42,34 +35,47 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 4. Salvar progresso do Checklist (Aba 12) usando localStorage
-    const checkboxes = document.querySelectorAll('.check-item input[type="checkbox"]');
-    
-    // Carregar estado salvo ao iniciar
-    checkboxes.forEach(box => {
-        const savedState = localStorage.getItem(box.id);
-        if (savedState === 'true') {
-            box.checked = true;
-        }
-
-        // Salvar estado ao alterar
-        box.addEventListener('change', (e) => {
-            localStorage.setItem(e.target.id, e.target.checked);
-        });
-    });
-
-    // 5. Botão "Voltar ao Topo"
-    const backToTopBtn = document.getElementById('back-to-top');
-    
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            backToTopBtn.style.display = 'block';
-        } else {
-            backToTopBtn.style.display = 'none';
-        }
-    });
-
-    backToTopBtn.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+    // Inicializa o visual padrão
+    toggleRegime('fazenda');
 });
+
+// Função para Trocar Regime (Fazenda vs Privado)
+function toggleRegime(regime) {
+    currentRegime = regime;
+    
+    // Atualiza classes dos cards superiores
+    document.getElementById('card-fazenda').classList.remove('active');
+    document.getElementById('card-privado').classList.remove('active');
+    document.getElementById('card-' + regime).classList.add('active');
+
+    // Atualiza o Título e a Tabela Exibida
+    const titleEl = document.getElementById('regime-title');
+    const tableFazenda = document.getElementById('table-fazenda');
+    const tablePrivado = document.getElementById('table-privado');
+
+    if (regime === 'fazenda') {
+        titleEl.innerText = 'Regime aplicável · Fazenda Pública';
+        tableFazenda.style.display = 'block';
+        tablePrivado.style.display = 'none';
+    } else {
+        titleEl.innerText = 'Regime aplicável · Réu privado';
+        tableFazenda.style.display = 'none';
+        tablePrivado.style.display = 'block';
+    }
+}
+
+// Função para a Sanfona (Accordion de Comparativo)
+function toggleAccordion() {
+    const content = document.getElementById('comparativo-content');
+    const btnSpan = document.querySelector('.accordion-btn span');
+    
+    if (content.classList.contains('open')) {
+        content.classList.remove('open');
+        btnSpan.innerText = '⌃';
+        document.querySelector('.accordion-btn').firstChild.textContent = 'Exibir comparativo lado a lado ';
+    } else {
+        content.classList.add('open');
+        btnSpan.innerText = '⌄';
+        document.querySelector('.accordion-btn').firstChild.textContent = 'Ocultar comparativo lado a lado ';
+    }
+}
