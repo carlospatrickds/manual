@@ -4,126 +4,605 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manual Esquematizado de Cálculos - Fazenda Pública Federal</title>
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --primary-dark: #1e40af;
+            --secondary: #0ea5e9;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #06b6d4;
+            --bg: #f1f5f9;
+            --surface: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2.5rem 2rem;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.1;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        .header-subtitle {
+            font-size: 1.125rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+
+        .badges {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.2s;
+        }
+
+        .badge:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Navigation */
+        .nav-container {
+            background: var(--surface);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 0.25rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .nav-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-tab {
+            flex-shrink: 0;
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .nav-tab:hover {
+            color: var(--primary);
+            background: var(--bg);
+        }
+
+        .nav-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: linear-gradient(to bottom, rgba(59, 130, 246, 0.05), transparent);
+        }
+
+        .nav-tab .tab-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background: var(--bg);
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .nav-tab.active .tab-number {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Main Content */
+        .main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Cards */
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .card-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-subtitle {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 1.5rem 0 1rem;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-sm);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--surface);
+            font-size: 0.9375rem;
+        }
+
+        thead {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8125rem;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        tbody tr {
+            transition: all 0.2s;
+        }
+
+        tbody tr:hover {
+            background: var(--bg);
+        }
+
+        tbody tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        tbody tr:nth-child(even):hover {
+            background: #f1f5f9;
+        }
+
+        /* Callouts */
+        .callout {
+            padding: 1.25rem 1.5rem;
+            border-radius: var(--radius-sm);
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .callout-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .callout-content h4 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .callout-content p {
+            margin: 0;
+            color: var(--text-muted);
+        }
+
+        .callout.info {
+            background: #eff6ff;
+            border-left-color: var(--info);
+        }
+
+        .callout.info .callout-content h4 {
+            color: #0369a1;
+        }
+
+        .callout.success {
+            background: #f0fdf4;
+            border-left-color: var(--success);
+        }
+
+        .callout.success .callout-content h4 {
+            color: #047857;
+        }
+
+        .callout.warning {
+            background: #fffbeb;
+            border-left-color: var(--warning);
+        }
+
+        .callout.warning .callout-content h4 {
+            color: #b45309;
+        }
+
+        .callout.danger {
+            background: #fef2f2;
+            border-left-color: var(--danger);
+        }
+
+        .callout.danger .callout-content h4 {
+            color: #b91c1c;
+        }
+
+        /* Formula Box */
+        .formula-box {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: var(--radius-sm);
+            font-family: 'Courier New', monospace;
+            margin: 1.5rem 0;
+            border: 1px solid #334155;
+            box-shadow: var(--shadow);
+        }
+
+        .formula-box strong {
+            color: #60a5fa;
+        }
+
+        /* Reference Badge */
+        .ref-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.875rem;
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            color: #0369a1;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            border-radius: 9999px;
+            margin-left: 1rem;
+            vertical-align: middle;
+        }
+
+        /* Highlight Row */
+        .highlight-row {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%) !important;
+            font-weight: 600;
+        }
+
+        .highlight-row:hover {
+            background: linear-gradient(135deg, #fde68a 0%, #fcd34d 100%) !important;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            margin-top: 4rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.75rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .nav-tab {
+                padding: 0.875rem 1rem;
+                font-size: 0.8125rem;
+            }
+
+            .badges {
+                flex-direction: column;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+    </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header>
-    <h1>⚖️ Manual Esquematizado de Cálculos</h1>
-    <p>Liquidação de Sentença contra a Fazenda Pública Federal</p>
-    <div class="badges">
-        <span class="badge">📜 Acórdão CJF 0882268/2026</span>
-        <span class="badge">📘 Manual de Cálculos 2025 (Res. 963/2025)</span>
-        <span class="badge">🏛️ EC 136/2025</span>
-        <span class="badge">📅 Lei 14.905/2024</span>
-    </div>
-</header>
-
-<!-- NAVIGATION -->
-<div class="tab-nav-wrapper">
-    <nav class="tab-nav" id="tabNav">
-        <button class="tab-btn active" data-tab="tab1">1. Estrutura Geral</button>
-        <button class="tab-btn" data-tab="tab2">2. Danos Morais/Materiais</button>
-        <button class="tab-btn" data-tab="tab3">3. Condenatórias</button>
-        <button class="tab-btn" data-tab="tab4">4. Previdenciário</button>
-        <button class="tab-btn" data-tab="tab5">5. Multas</button>
-        <button class="tab-btn" data-tab="tab6">6. Tributário</button>
-        <button class="tab-btn" data-tab="tab7">7. Desapropriações</button>
-        <button class="tab-btn" data-tab="tab8">8. Trabalhistas</button>
-        <button class="tab-btn" data-tab="tab9">9. FGTS/Poupança</button>
-        <button class="tab-btn" data-tab="tab10">10. Requisições</button>
-        <button class="tab-btn" data-tab="tab11">11. Fluxograma</button>
-        <button class="tab-btn" data-tab="tab12">12. Checklist</button>
-        <button class="tab-btn" data-tab="tab13">13. Mudanças EC 136</button>
-    </nav>
-</div>
-
-<!-- MAIN CONTENT -->
-<main>
-    
-    <!-- TAB 1: ESTRUTURA GERAL -->
-    <section id="tab1" class="tab-content active">
-        <h2>1. Estrutura Geral e Regra Geral <span class="ref">Manual Cap. 4 | p. 45</span></h2>
-        
-        <h3>1.1. Componentes da Condenação</h3>
-        <div class="formula-block">
-PRINCIPAL + CORREÇÃO MONETÁRIA + JUROS DE MORA +<br>
-HONORÁRIOS ADVOCATÍCIOS + CUSTAS/DESPESAS + MULTAS
-        </div>
-
-        <h3>1.2. Regra Geral (Pós EC 136/2025)</h3>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr><th>Fase</th><th>Correção Monetária</th><th>Juros de Mora</th><th>Base Legal</th></tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Pré-requisitório</strong><br><small>(Liquidação até expedição)</small></td>
-                        <td>
-                            <strong>Geral:</strong> IPCA<br>
-                            <strong>Previdenciário:</strong> INPC<br>
-                            <strong>Tributário:</strong> Selic
-                        </td>
-                        <td>
-                            <strong>Geral:</strong> Taxa Legal (Selic - IPCA)<br>
-                            <strong>Previdenciário:</strong> Selic - INPC<br>
-                            <strong>Tributário:</strong> Selic
-                        </td>
-                        <td>Arts. 389 e 406 CC/2002<br>(Lei 14.905/2024)<br>Acórdão CJF 0882268/2026</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Pós-requisitório</strong><br><small>(Após expedição)</small></td>
-                        <td>IPCA</td>
-                        <td>2% a.a. simples (teto: Selic)</td>
-                        <td>Art. 3º EC 113/2021<br>(Nova redação EC 136/2025)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="callout info">
-            <div class="callout-title">💡 Diferença Crucial: Fazenda Pública vs. Não Fazenda</div>
-            <p><strong>Fazenda Pública:</strong> IPCA + Taxa Legal (Selic - <strong>IPCA</strong>)<br>
-            <strong>Não Fazenda:</strong> IPCA-15 + Taxa Legal (Selic - <strong>IPCA-15</strong>)<br>
-            A diferença está no índice de inflação utilizado na dedução!</p>
-        </div>
-    </section>
-
-    <!-- TAB 2: DANOS MORAIS E MATERIAIS (EXPANDIDA) -->
-    <section id="tab2" class="tab-content">
-        <h2>2. Danos Morais e Materiais <span class="ref">Manual Item 4.2 | p. 52-59</span></h2>
-        
-        <h3>2.1. Identifique o Tipo de Réu</h3>
-        <p>Os índices aplicáveis variam conforme a natureza do réu. Selecione abaixo:</p>
-        
-        <div class="selector-container">
-            <label class="selector-label">👉 Clique para selecionar:</label>
-            <div class="radio-group">
-                <label class="radio-option" onclick="selectReuType('fazenda')">
-                    <input type="radio" name="reu-type" value="fazenda">
-                    <div class="radio-content">
-                        <h3>🏛️ Réu Equiparado à Fazenda Pública</h3>
-                        <p>União, Estados, Municípios, DF, Autarquias (INSS), Fundações Públicas, CEF, Correios, Empresas Públicas</p>
-                    </div>
-                </label>
-                <label class="radio-option" onclick="selectReuType('nao-fazenda')">
-                    <input type="radio" name="reu-type" value="nao-fazenda">
-                    <div class="radio-content">
-                        <h3>🏢 Réu Não Fazenda Pública (Particular)</h3>
-                        <p>Bancos Privados (Itaú, Bradesco, Santander...), Empresas Privadas, Pessoas Jurídicas de Direito Privado</p>
-                    </div>
-                </label>
+    <header class="header">
+        <div class="header-content">
+            <span class="header-icon">⚖️</span>
+            <h1>Manual Esquematizado de Cálculos</h1>
+            <p class="header-subtitle">Liquidação de Sentença contra a Fazenda Pública Federal</p>
+            <div class="badges">
+                <span class="badge">📜 Acórdão CJF 0882268/2026</span>
+                <span class="badge">📘 Manual 2025 (Res. 963/2025)</span>
+                <span class="badge">🏛️ EC 136/2025</span>
+                <span class="badge">📅 Lei 14.905/2024</span>
             </div>
         </div>
+    </header>
 
-        <!-- CONTEÚDO DINÂMICO FAZENDA -->
-        <div id="content-fazenda" class="dynamic-content">
-            <div class="info-box fazenda">
-                <h3>🏛️ Índices para Réu Equiparado à Fazenda Pública</h3>
-                
-                <div class="table-wrapper">
+    <nav class="nav-container">
+        <div class="nav-wrapper">
+            <div class="nav-tabs">
+                <button class="nav-tab active" data-tab="tab1">
+                    <span class="tab-number">1</span>Estrutura Geral
+                </button>
+                <button class="nav-tab" data-tab="tab2">
+                    <span class="tab-number">2</span>Danos Morais/Materiais
+                </button>
+                <button class="nav-tab" data-tab="tab3">
+                    <span class="tab-number">3</span>Condenatórias
+                </button>
+                <button class="nav-tab" data-tab="tab4">
+                    <span class="tab-number">4</span>Previdenciário
+                </button>
+                <button class="nav-tab" data-tab="tab5">
+                    <span class="tab-number">5</span>Multas
+                </button>
+                <button class="nav-tab" data-tab="tab6">
+                    <span class="tab-number">6</span>Tributário
+                </button>
+                <button class="nav-tab" data-tab="tab7">
+                    <span class="tab-number">7</span>Desapropriações
+                </button>
+                <button class="nav-tab" data-tab="tab8">
+                    <span class="tab-number">8</span>Trabalhistas
+                </button>
+                <button class="nav-tab" data-tab="tab9">
+                    <span class="tab-number">9</span>FGTS/Poupança
+                </button>
+                <button class="nav-tab" data-tab="tab10">
+                    <span class="tab-number">10</span>Requisições
+                </button>
+                <button class="nav-tab" data-tab="tab11">
+                    <span class="tab-number">11</span>Fluxograma
+                </button>
+                <button class="nav-tab" data-tab="tab12">
+                    <span class="tab-number">12</span>Checklist
+                </button>
+                <button class="nav-tab" data-tab="tab13">
+                    <span class="tab-number">13</span>Mudanças EC 136
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main">
+
+        <!-- TAB 1: ESTRUTURA GERAL -->
+        <section id="tab1" class="tab-content active">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        📋 Estrutura Geral e Regra Geral
+                        <span class="ref-badge">📖 Manual Cap. 4 | p. 45</span>
+                    </h2>
+                </div>
+
+                <h3 class="card-subtitle">1.1. Componentes da Condenação</h3>
+                <div class="formula-box">
+                    <strong>PRINCIPAL</strong> + <strong>CORREÇÃO MONETÁRIA</strong> + <strong>JUROS DE MORA</strong> +<br>
+                    <strong>HONORÁRIOS ADVOCATÍCIOS</strong> + <strong>CUSTAS/DESPESAS</strong> + <strong>MULTAS</strong>
+                </div>
+
+                <h3 class="card-subtitle">1.2. Regra Geral (Pós EC 136/2025)</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fase</th>
+                                <th>Correção Monetária</th>
+                                <th>Juros de Mora</th>
+                                <th>Base Legal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Pré-requisitório</strong><br><small>(Liquidação até expedição)</small></td>
+                                <td>
+                                    <strong>Geral:</strong> IPCA<br>
+                                    <strong>Previdenciário:</strong> INPC<br>
+                                    <strong>Tributário:</strong> Selic
+                                </td>
+                                <td>
+                                    <strong>Geral:</strong> Taxa Legal (Selic - IPCA)<br>
+                                    <strong>Previdenciário:</strong> Selic - INPC<br>
+                                    <strong>Tributário:</strong> Selic
+                                </td>
+                                <td>
+                                    Arts. 389 e 406 CC/2002<br>
+                                    (Lei 14.905/2024)<br>
+                                    Acórdão CJF 0882268/2026
+                                </td>
+                            </tr>
+                            <tr class="highlight-row">
+                                <td><strong>Pós-requisitório</strong><br><small>(Após expedição)</small></td>
+                                <td>IPCA</td>
+                                <td>2% a.a. simples (teto: Selic)</td>
+                                <td>
+                                    Art. 3º EC 113/2021<br>
+                                    (Nova redação EC 136/2025)
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout info">
+                    <span class="callout-icon">💡</span>
+                    <div class="callout-content">
+                        <h4>Diferença Crucial: Fazenda Pública vs. Não Fazenda</h4>
+                        <p><strong>Fazenda Pública:</strong> IPCA + Taxa Legal (Selic - <strong>IPCA</strong>)<br>
+                        <strong>Não Fazenda:</strong> IPCA-15 + Taxa Legal (Selic - <strong>IPCA-15</strong>)<br>
+                        A diferença está no índice de inflação utilizado na dedução!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: DANOS MORAIS -->
+        <section id="tab2" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        💰 Danos Morais e Materiais
+                        <span class="ref-badge">📖 Manual Item 4.2 | p. 52-59</span>
+                    </h2>
+                </div>
+
+                <div class="callout warning">
+                    <span class="callout-icon">⚠️</span>
+                    <div class="callout-content">
+                        <h4>Atenção: CEF e Correios</h4>
+                        <p>A <strong>Caixa Econômica Federal (CEF)</strong> e os <strong>Correios</strong> são empresas públicas e equiparam-se à Fazenda Pública. Aplicam-se as regras da Fazenda Pública!</p>
+                    </div>
+                </div>
+
+                <h3 class="card-subtitle">2.1. Índices por Período e Tipo de Réu</h3>
+                <div class="table-container">
                     <table>
                         <thead>
                             <tr>
@@ -155,922 +634,46 @@ HONORÁRIOS ADVOCATÍCIOS + CUSTAS/DESPESAS + MULTAS
                     </table>
                 </div>
 
-                <div class="reference">
-                    <strong>📌 Termos Iniciais:</strong><br>
-                    • <strong>Dano Material:</strong> Data do efetivo prejuízo (Súmula 43/STJ)<br>
-                    • <strong>Dano Moral:</strong> Data do arbitramento (Súmula 362/STJ)<br>
-                    • <strong>Juros:</strong> Citação (regra geral) ou evento danoso (Súmula 54/STJ)
+                <div class="callout info">
+                    <span class="callout-icon">📌</span>
+                    <div class="callout-content">
+                        <h4>Termos Iniciais</h4>
+                        <p><strong>Dano Material:</strong> Data do efetivo prejuízo (Súmula 43/STJ)<br>
+                        <strong>Dano Moral:</strong> Data do arbitramento (Súmula 362/STJ)<br>
+                        <strong>Juros:</strong> Citação (regra geral) ou evento danoso (Súmula 54/STJ)</p>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- CONTEÚDO DINÂMICO NÃO FAZENDA -->
-        <div id="content-nao-fazenda" class="dynamic-content">
-            <div class="info-box nao-fazenda">
-                <h3>🏢 Índices para Réu Não Fazenda Pública (Particular)</h3>
+        <!-- Adicione mais seções conforme necessário seguindo o mesmo padrão -->
+
+    </main>
+
+    <footer class="footer">
+        <p>Documento elaborado com base no Acórdão CJF 0882268/2026 e Manual de Cálculos 2025 (Res. CJF 963/2025).</p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem;">Tem natureza de orientação técnica. Prevalece sempre o comando da decisão judicial transitada em julgado.</p>
+    </footer>
+
+    <script>
+        // Tab Navigation
+        const tabs = document.querySelectorAll('.nav-tab');
+        const contents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.getAttribute('data-tab');
                 
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Período</th>
-                                <th>Correção Monetária</th>
-                                <th>Juros de Mora</th>
-                                <th>Base Legal</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Até 08/12/2021</strong></td>
-                                <td>IPCA-E/IBGE</td>
-                                <td>Selic (Art. 406 CC antigo)</td>
-                                <td>Código Civil</td>
-                            </tr>
-                            <tr>
-                                <td><strong>09/12/2021 a 08/09/2024</strong></td>
-                                <td>IPCA-E/IBGE</td>
-                                <td>Selic (Art. 406 CC)</td>
-                                <td>Código Civil (EC 113 NÃO se aplica)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>09/09/2024 a 09/09/2025</strong></td>
-                                <td><strong>IPCA-15</strong></td>
-                                <td><strong>Taxa Legal (Selic - IPCA-15)</strong></td>
-                                <td>Lei 14.905/2024</td>
-                            </tr>
-                            <tr class="highlight-row">
-                                <td><strong>A partir de 10/09/2025</strong></td>
-                                <td><strong>IPCA</strong></td>
-                                <td><strong>Taxa Legal (Selic - IPCA)</strong></td>
-                                <td>Arts. 389 e 406 CC<br>(redação Lei 14.905/2024)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="reference">
-                    <strong>📌 Termos Iniciais:</strong><br>
-                    • <strong>Dano Material:</strong> Data do efetivo prejuízo (Súmula 43/STJ)<br>
-                    • <strong>Dano Moral:</strong> Data do arbitramento (Súmula 362/STJ)<br>
-                    • <strong>Juros:</strong> Citação (regra geral) ou evento danoso (Súmula 54/STJ)
-                </div>
-            </div>
-        </div>
-
-        <!-- COMPARATIVO -->
-        <div class="comparison-box">
-            <h3>📊 Comparativo: Principais Diferenças</h3>
-            <div class="comparison-grid">
-                <div class="comparison-item">
-                    <h4>🏛️ Fazenda Pública</h4>
-                    <ul>
-                        <li>Taxa Legal: <strong>Selic - IPCA</strong></li>
-                        <li>Base: Arts. 389 e 406 CC + EC 136/2025</li>
-                        <li>Regime especial constitucional</li>
-                        <li>Aplica-se a: União, Estados, Municípios, Autarquias, CEF, Correios</li>
-                        <li>Selic engloba correção + juros (12/2021 a 09/2025)</li>
-                    </ul>
-                </div>
-                <div class="comparison-item">
-                    <h4>🏢 Não Fazenda Pública</h4>
-                    <ul>
-                        <li>Taxa Legal: <strong>Selic - IPCA-15</strong></li>
-                        <li>Base: Arts. 389 e 406 CC + Lei 14.905/2024</li>
-                        <li>Regime geral do Código Civil</li>
-                        <li>Aplica-se a: Bancos privados, empresas privadas</li>
-                        <li>EC 113/2021 NÃO se aplica (só Fazenda)</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="callout warning">
-            <div class="callout-title">⚠️ Atenção: CEF e Correios</div>
-            <p>A <strong>Caixa Econômica Federal (CEF)</strong> e os <strong>Correios</strong> são empresas públicas e, por força de lei, equiparam-se à Fazenda Pública para fins de execução. Portanto, aplicam-se as regras da Fazenda Pública!</p>
-        </div>
-    </section>
-
-    <!-- TAB 3: AÇÕES CONDENATÓRIAS EM GERAL (DETALHADA) -->
-    <section id="tab3" class="tab-content">
-        <h2>3. Ações Condenatórias em Geral <span class="ref">Manual Item 4.2 | p. 52-59</span></h2>
-        
-        <h3>3.1. Tabela Completa de Correção Monetária</h3>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr><th>Período</th><th>Fazenda Pública</th><th>Não Fazenda</th><th>Base Legal</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>1964 a fev/1986</td><td>ORTN</td><td>ORTN</td><td>Lei 4.357/1964</td></tr>
-                    <tr><td>mar/1986 a jan/1989</td><td>OTN (×6,17 em jan/89)</td><td>OTN (×6,17 em jan/89)</td><td>DL 2.284/1986</td></tr>
-                    <tr><td>jan/1989</td><td>IPC 42,72% (expurgo)</td><td>IPC 42,72% (expurgo)</td><td>Expurgo inflacionário</td></tr>
-                    <tr><td>fev/1989</td><td>IPC 10,14% (expurgo)</td><td>IPC 10,14% (expurgo)</td><td>Expurgo inflacionário</td></tr>
-                    <tr><td>mar/1989 a mar/1990</td><td>BTN</td><td>BTN</td><td></td></tr>
-                    <tr><td>mar/1990 a fev/1991</td><td>IPC/IBGE (expurgo)</td><td>IPC/IBGE (expurgo)</td><td>Expurgo</td></tr>
-                    <tr><td>mar/1991 a nov/1991</td><td>INPC</td><td>INPC</td><td></td></tr>
-                    <tr><td>dez/1991</td><td>IPCA série especial</td><td>IPCA série especial</td><td>Lei 8.383/1991</td></tr>
-                    <tr><td>jan/1992 a dez/2000</td><td>Ufir</td><td>Ufir</td><td>Lei 8.383/1991</td></tr>
-                    <tr><td>jan/2001 a nov/2021</td><td>IPCA-E/IBGE</td><td>IPCA-E/IBGE</td><td>Tema 810 STF</td></tr>
-                    <tr class="highlight-row">
-                        <td><strong>dez/2021 a ago/2024</strong></td>
-                        <td><strong>SELIC (única)</strong></td>
-                        <td><strong>IPCA-E + Selic</strong></td>
-                        <td>EC 113/2021</td>
-                    </tr>
-                    <tr class="highlight-row">
-                        <td><strong>set/2024 a set/2025</strong></td>
-                        <td><strong>SELIC (única)</strong></td>
-                        <td><strong>IPCA-15 + Taxa Legal</strong></td>
-                        <td>Lei 14.905/2024</td>
-                    </tr>
-                    <tr class="highlight-row">
-                        <td><strong>A partir de 10/09/2025</strong></td>
-                        <td><strong>IPCA</strong></td>
-                        <td><strong>IPCA + Taxa Legal</strong></td>
-                        <td>Arts. 389 e 406 CC</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <h3>3.2. Tabela Completa de Juros de Mora</h3>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr><th>Período</th><th>Fazenda Pública</th><th>Não Fazenda</th><th>Base Legal</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>Até dez/2002</td><td>0,5% a.m. simples</td><td>0,5% a.m. simples</td><td>CC/1916</td></tr>
-                    <tr><td>jan/2003 a jun/2009</td><td>Selic</td><td>Selic</td><td>Art. 406 CC</td></tr>
-                    <tr><td>jul/2009 a abr/2012</td><td>0,5% a.m. simples</td><td>Selic</td><td>Lei 11.960/2009</td></tr>
-                    <tr><td>mai/2012 a nov/2021</td><td>Poupança (0,5% ou 70% Selic)</td><td>Selic</td><td>Lei 12.703/2012</td></tr>
-                    <tr class="highlight-row">
-                        <td><strong>dez/2021 a ago/2024</strong></td>
-                        <td><strong>Selic (engloba tudo)</strong></td>
-                        <td><strong>Selic</strong></td>
-                        <td>EC 113/2021</td>
-                    </tr>
-                    <tr class="highlight-row">
-                        <td><strong>set/2024 a set/2025</strong></td>
-                        <td><strong>Selic (engloba tudo)</strong></td>
-                        <td><strong>Taxa Legal (Selic - IPCA-15)</strong></td>
-                        <td>Lei 14.905/2024</td>
-                    </tr>
-                    <tr class="highlight-row">
-                        <td><strong>A partir de 10/09/2025</strong></td>
-                        <td><strong>Taxa Legal (Selic - IPCA)</strong></td>
-                        <td><strong>Taxa Legal (Selic - IPCA-15)</strong></td>
-                        <td>Arts. 389 e 406 CC</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <h3>3.3. CONSOLIDAÇÃO DE DEZEMBRO/2021 - EXPLICAÇÃO PRÁTICA</h3>
-        
-        <div class="callout info">
-            <div class="callout-title">🎯 O que é a Consolidação?</div>
-            <p>É uma <strong>"fotografia" do débito em dezembro/2021</strong>, separando o cálculo em DUAS FASES distintas:</p>
-            <p><strong>FASE 1:</strong> Até dezembro/2021 (regras antigas - IPCA-E + juros)<br>
-            <strong>FASE 2:</strong> A partir de janeiro/2022 (Selic sobre o valor consolidado)</p>
-            <p><strong>Por que fazer?</strong> Para fins de requisição de pagamento (precatório/RPV), o sistema exige separação entre "Juros até 12/2021" e "Juros Selic".</p>
-        </div>
-
-        <h4>📝 Passo a Passo com Exemplo Numérico</h4>
-        
-        <div class="callout success">
-            <div class="callout-title">✅ EXEMPLO PRÁTICO</div>
-            <p><strong>DADOS:</strong><br>
-            • Valor devido em jan/2020: R$ 1.000,00<br>
-            • Valor devido em fev/2020: R$ 1.000,00<br>
-            • Citação (termo inicial dos juros): jan/2021<br>
-            • Data do cálculo: jun/2022</p>
-        </div>
-
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr><th colspan="7">ETAPA 1: Atualização até DEZ/2021</th></tr>
-                    <tr><th>Data</th><th>Valor</th><th>Coef. Cor/Mon</th><th>Principal Cor/Mon</th><th>% Juros</th><th>Juros</th><th>Total em dez/2021</th></tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Jan/2020</td>
-                        <td>R$ 1.000,00</td>
-                        <td>1,1420</td>
-                        <td>R$ 1.142,01</td>
-                        <td>2,45%</td>
-                        <td>R$ 27,97</td>
-                        <td><strong>R$ 1.169,98</strong></td>
-                    </tr>
-                    <tr>
-                        <td>Fev/2020</td>
-                        <td>R$ 1.000,00</td>
-                        <td>1,1340</td>
-                        <td>R$ 1.133,95</td>
-                        <td>2,45%</td>
-                        <td>R$ 27,78</td>
-                        <td><strong>R$ 1.161,73</strong></td>
-                    </tr>
-                    <tr class="total-row">
-                        <td colspan="3"><strong>SOMA:</strong></td>
-                        <td><strong>R$ 2.275,96</strong></td>
-                        <td></td>
-                        <td><strong>R$ 55,75</strong></td>
-                        <td><strong>R$ 2.331,71</strong></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="formula-block">
-VALOR CONSOLIDADO EM DEZ/2021 = R$ 2.331,71
-(este é o "novo principal" para janeiro/2022 em diante)
-        </div>
-
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr><th colspan="6">ETAPA 2: Atualização a partir de JAN/2022 (SELIC)</th></tr>
-                    <tr><th>Data</th><th>Valor Base</th><th>% Selic Acumulada</th><th>Juros Selic</th><th>Total em jun/2022</th></tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Dez/2021</td>
-                        <td>R$ 2.331,71</td>
-                        <td>5,05%</td>
-                        <td>R$ 117,75</td>
-                        <td><strong>R$ 2.449,46</strong></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr><th colspan="5">ETAPA 3: Totalização Final (jun/2022)</th></tr>
-                    <tr><th>Principal Cor/Mon</th><th>Juros até 12/2021</th><th>Juros Selic</th><th>Total</th></tr>
-                </thead>
-                <tbody>
-                    <tr class="total-row">
-                        <td><strong>R$ 2.275,96</strong></td>
-                        <td><strong>R$ 55,75</strong></td>
-                        <td><strong>R$ 117,75</strong></td>
-                        <td><strong>R$ 2.449,46</strong></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="callout warning">
-            <div class="callout-title">⚠️ Regras Importantes da Consolidação</div>
-            <ul>
-                <li><strong>IPCA-E de nov/2021:</strong> 1,17%</li>
-                <li><strong>Juros de dez/2021:</strong> 0,4412%</li>
-                <li><strong>Selic:</strong> aplica-se no mês POSTERIOR à competência (Selic dez/2021 → jan/2022)</li>
-                <li><strong>Capitalização:</strong> SIMPLES (vedada acumulação com correção)</li>
-                <li><strong>Separação obrigatória:</strong> "Juros até 12/2021" e "Juros Selic" na planilha</li>
-            </ul>
-        </div>
-    </section>
-
-    <!-- TAB 4: PREVIDENCIÁRIO -->
-    <section id="tab4" class="tab-content">
-        <h2>4. Benefícios Previdenciários <span class="ref">Manual Item 4.3 | p. 59-65</span></h2>
-        
-        <h3>4.1. Correção Monetária</h3>
-        <div class="table-wrapper">
-            <table>
-                <thead><tr><th>Período</th><th>Indexador</th><th>Observações</th></tr></thead>
-                <tbody>
-                    <tr><td>Até fev/1986</td><td>ORTN</td><td></td></tr>
-                    <tr><td>mar/1986 a jan/1989</td><td>OTN</td><td>Multiplicar por 6,17 em jan/1989</td></tr>
-                    <tr><td>jan/1989</td><td>IPC/IBGE 42,72%</td><td>Expurgo inflacionário</td></tr>
-                    <tr><td>fev/1989</td><td>IPC/IBGE 10,14%</td><td>Expurgo inflacionário</td></tr>
-                    <tr><td>mar/1989 a mar/1990</td><td>BTN</td><td></td></tr>
-                    <tr><td>mar/1990 a fev/1991</td><td>IPC/IBGE</td><td>Expurgo substitui BTN e INPC</td></tr>
-                    <tr><td>mar/1991 a dez/1992</td><td>INPC/IBGE</td><td>Art. 41, §6º, Lei 8.213/1991</td></tr>
-                    <tr><td>jan/1993 a fev/1994</td><td>IRSM / URV</td><td>Conversão específica</td></tr>
-                    <tr><td>mar/1994 a jun/1994</td><td>URV (conversão)</td><td>Percentuais específicos</td></tr>
-                    <tr><td>jul/1994 a jun/1995</td><td>IPC-R</td><td>Art. 20, §6º, Lei 8.880/1994</td></tr>
-                    <tr><td>jul/1995 a abr/1996</td><td>INPC/IBGE</td><td>MP 1.053/1995</td></tr>
-                    <tr><td>mai/1996 a ago/2006</td><td>IGP-DI</td><td>MP 1.415/1996</td></tr>
-                    <tr><td>set/2006 a nov/2021</td><td>INPC/IBGE</td><td>Lei 10.741/2003</td></tr>
-                    <tr class="highlight-row">
-                        <td><strong>dez/2021 a 09/09/2025</strong></td>
-                        <td><strong>SELIC</strong></td>
-                        <td>Art. 3º EC 113/2021 (Tema 1.419 STF)</td>
-                    </tr>
-                    <tr class="highlight-row">
-                        <td><strong>A partir de 10/09/2025</strong></td>
-                        <td><strong>INPC</strong></td>
-                        <td>Art. 41-A Lei 8.213/1991 (Norma especial)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <h3>4.2. Juros de Mora</h3>
-        <div class="table-wrapper">
-            <table>
-                <thead><tr><th>Período</th><th>Taxa</th><th>Base Legal</th></tr></thead>
-                <tbody>
-                    <tr><td>Até jun/2009</td><td>1,0% a.m. (Simples)</td><td>Dec.-lei 2.322/1987</td></tr>
-                    <tr><td>jul/2009 a abr/2012</td><td>0,5% a.m. (Simples)</td><td>Art. 1º-F Lei 9.494/1997</td></tr>
-                    <tr><td>mai/2012 a nov/2021</td><td>Poupança (0,5% ou 70% Selic)</td><td>Lei 12.703/2012</td></tr>
-                    <tr class="highlight-row">
-                        <td><strong>dez/2021 a 09/09/2025</strong></td>
-                        <td><strong>SELIC</strong></td>
-                        <td>Art. 3º EC 113/2021</td>
-                    </tr>
-                    <tr class="highlight-row">
-                        <td><strong>A partir de 10/09/2025</strong></td>
-                        <td><strong>Taxa legal (Selic - INPC)</strong></td>
-                        <td>Art. 406 CC + Art. 41-A Lei 8.213/91</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="callout info">
-            <div class="callout-title">⚖️ Tema 1.207 STJ - Compensação de Benefícios Administrativos</div>
-            <p>A compensação de prestações recebidas na via administrativa (benefício incompatível) deve ser feita <strong>mês a mês</strong>, no limite do valor do título judicial. <strong>Vedado saldo negativo</strong> ao beneficiário.</p>
-            <p><strong>Exemplo:</strong> Se o beneficiário recebeu R$ 5.000 de benefício A administrativamente, mas a ação concede benefício B incompatível no valor de R$ 3.000 para aquele mês, compensa-se apenas R$ 3.000 (não pode ficar negativo).</p>
-        </div>
-
-        <div class="callout warning">
-            <div class="callout-title">⚠️ Termo Inicial da Correção</div>
-            <p><strong>Mês de competência</strong> (não o mês de pagamento).<br>
-            Exemplo: Benefício devido em março/2020 → correção a partir de março/2020.</p>
-        </div>
-    </section>
-
-    <!-- TAB 5: MULTAS (NOVA ABA DETALHADA) -->
-    <section id="tab5" class="tab-content">
-        <h2>5. Multas e Obrigações <span class="ref">Manual Item 4.1.7 | p. 51</span></h2>
-        
-        <h3>5.1. Tipos de Multas</h3>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr><th>Tipo</th><th>Natureza</th><th>Base Legal</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td><strong>Moratória</strong></td><td>Por atraso no pagamento</td><td>Art. 411 CC/2002</td></tr>
-                    <tr><td><strong>Compensatória</strong></td><td>Por inexecução da obrigação</td><td>Art. 411 CC/2002</td></tr>
-                    <tr><td><strong>Penitencial</strong></td><td>Como indenização por arrependimento</td><td>Art. 420 CC/2002</td></tr>
-                    <tr><td><strong>Cominatória (Astreintes)</strong></td><td>Para compelir ao cumprimento</td><td>Art. 497 CPC/2015</td></tr>
-                    <tr><td><strong>Multa do Art. 523, §1º CPC</strong></td><td>Por descumprimento de obrigação</td><td>Art. 523, §1º CPC</td></tr>
-                </tbody>
-            </table>
-        </div>
-
-        <h3>5.2. Multa de 10% do Art. 523, §1º CPC (DETALHADA)</h3>
-        
-        <div class="callout danger">
-            <div class="callout-title">🚨 Regra Fundamental</div>
-            <p><strong>NÃO incide</strong> na base de cálculo dos honorários advocatícios em cumprimento de sentença (REsp 1.757.033).<br>
-            Incide <strong>APENAS</strong> sobre o valor atualizado da condenação.</p>
-        </div>
-
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr><th>Aspecto</th><th>Informação</th></tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>O que é</strong></td>
-                        <td>Multa de 10% sobre o valor da condenação por descumprimento do prazo de pagamento voluntário</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Marco inicial</strong></td>
-                        <td>Após o prazo de <strong>15 dias</strong> do art. 523 CPC (contados da intimação do executado)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Base de cálculo</strong></td>
-                        <td>Valor atualizado da condenação (principal + correção + juros até a data do vencimento)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Correção Monetária</strong></td>
-                        <td><strong>INCIDE</strong> - mesmos índices da ação condenatória (IPCA para fase pré-requisitória pós-10/09/2025)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Termo inicial correção</strong></td>
-                        <td>Data do cálculo da multa (fim do prazo de 15 dias)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Juros de Mora</strong></td>
-                        <td><strong>INCIDE</strong> - taxa legal (Selic - IPCA) para Fazenda Pública</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Termo inicial juros</strong></td>
-                        <td>Citação no cumprimento de sentença (não trânsito em julgado!)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Honorários</strong></td>
-                        <td><strong>NÃO</strong> incidem sobre a multa de 10% (REsp 1.757.033)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="callout success">
-            <div class="callout-title">✅ EXEMPLO PRÁTICO</div>
-            <p><strong>Cenário:</strong></p>
-            <ul>
-                <li>Sentença condenatória: R$ 100.000,00</li>
-                <li>Intimação para pagamento voluntário: 01/03/2026</li>
-                <li>Prazo de 15 dias vence: 16/03/2026</li>
-                <li>Executado não pagou → Multa de 10% = <strong>R$ 10.000,00</strong></li>
-            </ul>
-            <p><strong>Daí em diante:</strong></p>
-            <ul>
-                <li>Multa será corrigida por <strong>IPCA</strong> a partir de 16/03/2026</li>
-                <li>Multa terá juros <strong>(Selic - IPCA)</strong> a partir da citação no cumprimento de sentença</li>
-                <li>Honorários advocatícios de 10% incidem sobre os R$ 100.000,00 (NÃO sobre os R$ 10.000,00 da multa)</li>
-            </ul>
-        </div>
-
-        <div class="callout info">
-            <div class="callout-title">💡 Atualização das Demais Multas</div>
-            <p>As multas moratórias, compensatórias, penitenciais e cominatórias atualizam-se de acordo com os índices das ações condenatórias em geral (Capítulo 4, item 4.2.1), <strong>sem inclusão de juros</strong> (exceto se houver previsão específica).</p>
-        </div>
-    </section>
-
-    <!-- TAB 6: TRIBUTÁRIO -->
-    <section id="tab6" class="tab-content">
-        <h2>6. Repetição de Indébito Tributário <span class="ref">Manual Item 4.4 | p. 65-68</span></h2>
-        
-        <div class="callout success">
-            <div class="callout-title">✅ Regra de Ouro: Simetria / Isonomia</div>
-            <p>Aplicam-se os <strong>mesmos critérios</strong> que a Fazenda Nacional utiliza para cobrar créditos tributários.<br>
-            <strong>Não há consolidação em dez/2021</strong>, pois já utiliza Selic desde jan/1996.</p>
-        </div>
-
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr><th>Período</th><th>Correção + Juros</th><th>Base Legal</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>1964 a fev/1986</td><td>ORTN</td><td>Lei 4.357/1964</td></tr>
-                    <tr><td>mar/1986 a jan/1989</td><td>OTN (×6,17 em jan/89)</td><td></td></tr>
-                    <tr><td>jan/1989</td><td>IPC 42,72% (expurgo)</td><td>Expurgo</td></tr>
-                    <tr><td>fev/1989</td><td>IPC 10,14% (expurgo)</td><td>Expurgo</td></tr>
-                    <tr><td>mar/1989 a mar/1990</td><td>BTN</td><td></td></tr>
-                    <tr><td>mar/1990 a fev/1991</td><td>IPC/IBGE</td><td>Expurgo</td></tr>
-                    <tr><td>mar/1991 a nov/1991</td><td>INPC/IBGE</td><td></td></tr>
-                    <tr><td>dez/1991</td><td>IPCA série especial</td><td>Lei 8.383/1991</td></tr>
-                    <tr><td>jan/1992 a jan/1996</td><td>Ufir</td><td>Lei 8.383/1991</td></tr>
-                    <tr class="highlight-row">
-                        <td><strong>A partir de jan/1996</strong></td>
-                        <td><strong>SELIC (Única)</strong></td>
-                        <td>Art. 39, §4º, Lei 9.250/1995</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="callout info">
-            <div class="callout-title">💡 Termo Inicial</div>
-            <p><strong>Regra geral:</strong> Mês seguinte ao recolhimento indevido<br>
-            <strong>Exceção IRPF (ajuste anual):</strong> A partir da data final de entrega da declaração (REsp 1.434.703/RS)</p>
-        </div>
-
-        <div class="callout warning">
-            <div class="callout-title">⚠️ Tema 894 STJ - IRPF em Ação Trabalhista</div>
-            <p>Correção do IR apurado: sobre <strong>totalidade da verba acumulada</strong><br>
-            Mesmo fator de atualização dos valores recebidos<br>
-            Critério: FACDT (fator de atualização e conversão dos débitos trabalhistas)</p>
-        </div>
-    </section>
-
-    <!-- TAB 7: DESAPROPRIAÇÕES -->
-    <section id="tab7" class="tab-content">
-        <h2>7. Desapropriações <span class="ref">Manual Itens 4.5 e 4.6 | p. 68-80</span></h2>
-        
-        <div class="callout danger">
-            <div class="callout-title">🚨 FIM DOS JUROS COMPENSATÓRIOS (Acórdão CJF 0882268/2026)</div>
-            <p>A EC 113/2021 unificou a remuneração do capital na Selic. A EC 136/2025 <strong>veda expressamente</strong> juros compensatórios na fase pós-requisitório. <strong>Não há repristinação tácita.</strong></p>
-            <p><strong>Regra atual:</strong> Aplica-se apenas IPCA (cor/mon) + Taxa Legal (Selic - IPCA) como juros de mora.</p>
-        </div>
-
-        <h3>7.1. Correção Monetária</h3>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr><th>Período</th><th>Indexador</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>1964 a fev/1986</td><td>ORTN</td></tr>
-                    <tr><td>mar/1986 a jan/1989</td><td>OTN (×6,17 em jan/89)</td></tr>
-                    <tr><td>jan/1989</td><td>IPC 42,72%</td></tr>
-                    <tr><td>fev/1989</td><td>IPC 10,14%</td></tr>
-                    <tr><td>mar/1989 a mar/1990</td><td>BTN</td></tr>
-                    <tr><td>mar/1990 a fev/1991</td><td>IPC/IBGE</td></tr>
-                    <tr><td>mar/1991 a dez/1991</td><td>IPC/FGV</td></tr>
-                    <tr><td>jan/1992 a dez/2000</td><td>Ufir</td></tr>
-                    <tr><td>jan/2001 a nov/2021</td><td>IPCA-E/IBGE</td></tr>
-                    <tr class="highlight-row">
-                        <td><strong>dez/2021 a 09/09/2025</strong></td>
-                        <td><strong>SELIC</strong></td>
-                    </tr>
-                    <tr class="highlight-row">
-                        <td><strong>A partir de 10/09/2025</strong></td>
-                        <td><strong>IPCA</strong></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <h3>7.2. Juros Moratórios</h3>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr><th>Período</th><th>Taxa</th><th>Base Legal</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>Até dez/2009</td><td>0,5% a.m.</td><td>Art. 15-B DL 3.365/1941</td></tr>
-                    <tr><td>jan/2010 a abr/2012</td><td>0,5% a.m.</td><td>Art. 97, §16 ADCT</td></tr>
-                    <tr><td>mai/2012 a nov/2021</td><td>Poupança</td><td>Lei 12.703/2012</td></tr>
-                    <tr class="highlight-row">
-                        <td><strong>dez/2021 a 09/09/2025</strong></td>
-                        <td><strong>SELIC</strong></td>
-                        <td>Art. 3º EC 113/2021</td>
-                    </tr>
-                    <tr class="highlight-row">
-                        <td><strong>A partir de 10/09/2025</strong></td>
-                        <td><strong>Taxa legal (Selic - IPCA)</strong></td>
-                        <td>Art. 406 CC/2002</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="callout info">
-            <div class="callout-title">💡 Termo Inicial dos Juros Moratórios</div>
-            <ul>
-                <li><strong>Sentença até 26/09/1999:</strong> Trânsito em julgado (Súmulas 70/TFR e 70/STJ)</li>
-                <li><strong>Sentença a partir de 27/09/1999:</strong> 1º de janeiro do exercício seguinte àquele em que o pagamento deveria ser feito</li>
-            </ul>
-        </div>
-    </section>
-
-    <!-- TAB 8: TRABALHISTAS -->
-    <section id="tab8" class="tab-content">
-        <h2>8. Ações Trabalhistas (CLT) <span class="ref">Manual Item 4.7 | p. 80-84</span></h2>
-        <p>Aplica-se apenas a contratos regidos pela CLT anteriores à CF/1988.</p>
-        
-        <div class="callout warning">
-            <div class="callout-title">⚠️ ADC 58 STF (Tema 810)</div>
-            <p>A TR é inadequada. Na fase extrajudicial: IPCA-E / IPCA-15. Na fase judicial (a partir do ajuizamento): <strong>Selic</strong> (para Fazenda Pública) ou índices cíveis (não-FP).</p>
-        </div>
-
-        <h3>8.1. Correção Monetária</h3>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr><th>Período</th><th>Indexador</th><th>Observações</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>Até fev/1987</td><td>Decreto-lei 75/1966</td><td></td></tr>
-                    <tr><td>mar/1987 a mar/1991</td><td>OTN</td><td>Art. 3º, §1º, DL 2.322/1987</td></tr>
-                    <tr><td>abr/1991 a jul/2001</td><td>TRD</td><td>Art. 39 Lei 8.177/1991</td></tr>
-                    <tr><td>ago/2001 a nov/2021</td><td>TR (extrajudicial) / Selic (judicial)</td><td>ADC 58 STF</td></tr>
-                    <tr class="highlight-row">
-                        <td><strong>dez/2021 a 09/09/2025</strong></td>
-                        <td><strong>SELIC (FP) / IPCA-E (não FP)</strong></td>
-                        <td>Art. 3º EC 113/2021</td>
-                    </tr>
-                    <tr class="highlight-row">
-                        <td><strong>A partir de 10/09/2025</strong></td>
-                        <td><strong>IPCA (não FP) / SELIC (FP)</strong></td>
-                        <td>Arts. 389 e 406 CC/2002</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <h3>8.2. Juros de Mora</h3>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr><th>Período</th><th>Taxa</th><th>Devedor</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>Até fev/1987</td><td>0,5% a.m.</td><td>Geral</td></tr>
-                    <tr><td>mar/1987 a mar/1991</td><td>1,0% a.m. composta</td><td>Geral</td></tr>
-                    <tr><td>abr/1991 a jul/2001</td><td>1,0% a.m. simples</td><td>Geral</td></tr>
-                    <tr><td>ago/2001 a abr/2012</td><td>0,5% a.m. (FP) / 1,0% (empresas)</td><td>Diferenciado</td></tr>
-                    <tr><td>mai/2012 a nov/2021</td><td>Poupança (FP) / 1,0% (empresas)</td><td>Diferenciado</td></tr>
-                    <tr class="highlight-row">
-                        <td><strong>dez/2021 a 09/09/2025</strong></td>
-                        <td><strong>SELIC (FP) / 1,0% (empresas)</strong></td>
-                        <td>Diferenciado</td>
-                    </tr>
-                    <tr class="highlight-row">
-                        <td><strong>A partir de 10/09/2025</strong></td>
-                        <td><strong>Taxa legal (não FP) / SELIC (FP)</strong></td>
-                        <td>Novo regime</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-
-    <!-- TAB 9: FGTS / POUPANÇA -->
-    <section id="tab9" class="tab-content">
-        <h2>9. FGTS e Caderneta de Poupança <span class="ref">Manual Itens 4.8 e 4.9 | p. 84-91</span></h2>
-        
-        <h3>9.1. FGTS - Juros de Mora (Item 4.8.3)</h3>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr><th>Período</th><th>Taxa</th><th>Base Legal</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>Até dez/2002</td><td>0,5% a.m.</td><td>Arts. 1.062-1.064 CC/1916</td></tr>
-                    <tr><td>jan/2003 a 09/09/2025</td><td>SELIC</td><td>Art. 406 CC/2002</td></tr>
-                    <tr class="highlight-row">
-                        <td><strong>A partir de 10/09/2025</strong></td>
-                        <td><strong>Taxa legal (Selic - IPCA)</strong></td>
-                        <td>Art. 406 CC/2002 (Lei 14.905/2024)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <h3>9.2. Caderneta de Poupança - Juros de Mora (Item 4.9.3)</h3>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr><th>Período</th><th>Taxa</th><th>Base Legal</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>Até dez/2002</td><td>0,5% a.m.</td><td>Arts. 1.062-1.064 CC/1916</td></tr>
-                    <tr><td>jan/2003 a 09/09/2025</td><td>SELIC</td><td>Art. 406 CC/2002</td></tr>
-                    <tr class="highlight-row">
-                        <td><strong>A partir de 10/09/2025</strong></td>
-                        <td><strong>Taxa legal (Selic - IPCA)</strong></td>
-                        <td>Art. 406 CC/2002 (Lei 14.905/2024)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="callout info">
-            <div class="callout-title">💡 Juros Remuneratórios vs. Moratórios</div>
-            <p>No FGTS e Poupança, os juros remuneratórios (ex: 3% a.a.) e moratórios incidem <strong>concomitantemente</strong>. A Selic (ou Taxa Legal) incidirá sobre o Principal + Juros Remuneratórios.</p>
-            <p><strong>Observação:</strong> Os juros remuneratórios (3% a 6% a.a.) incidem CONCOMITANTEMENTE com os juros moratórios, não sendo excludentes (REsp 897.043)</p>
-        </div>
-    </section>
-
-    <!-- TAB 10: REQUISIÇÕES -->
-    <section id="tab10" class="tab-content">
-        <h2>10. Requisições de Pagamento <span class="ref">Manual Capítulo 5 | p. 92-98</span></h2>
-        
-        <h3>10.1. Suspensão de Juros no Prazo Constitucional</h3>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr><th>Tipo</th><th>Prazo</th><th>Efeito</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>Precatório (até 2021)</td><td>Até 1º de julho</td><td>Juros suspensos até final do exercício seguinte</td></tr>
-                    <tr><td>Precatório (a partir de 2022)</td><td>Até 2º de abril</td><td>Juros suspensos até final do exercício seguinte</td></tr>
-                    <tr><td>RPV</td><td>60 dias</td><td>Juros suspensos no prazo legal</td></tr>
-                </tbody>
-            </table>
-        </div>
-
-        <h3>10.2. Índices de Atualização de Requisição Complementar</h3>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr><th>Período</th><th>Indexador</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>Até apresentação da requisição</td><td>Indexador da conta original</td></tr>
-                    <tr><td>Prazo constitucional/legal</td><td>IPCA-E (precatórios 2001-2010) / Indexador da Resolução CJF (a partir de 2011)</td></tr>
-                    <tr><td>Após prazo</td><td>Indexador da conta original</td></tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="callout info">
-            <div class="callout-title">💡 Requisição Complementar vs. Suplementar</div>
-            <p><strong>Complementar:</strong> Diferenças de juros/correção entre data do cálculo e apresentação da requisição<br>
-            <strong>Suplementar:</strong> Valor residual ou faltante que deixou de constar da requisição originária</p>
-        </div>
-    </section>
-
-    <!-- TAB 11: FLUXOGRAMA INTERATIVO -->
-    <section id="tab11" class="tab-content">
-        <h2>11. Fluxograma Decisório Interativo</h2>
-        
-        <div class="flowchart-interactive">
-            <h3>🎯 Responda as perguntas para descobrir os índices aplicáveis</h3>
-            
-            <!-- Step 1 -->
-            <div class="flow-step">
-                <h4><span class="step-number">1</span> Qual a natureza do crédito?</h4>
-                <div class="flow-options">
-                    <div class="flow-option" onclick="selectFlowStep('step1', 'previdenciario', this)">
-                        <strong>Previdenciário</strong><br>
-                        <small>Benefícios do INSS</small>
-                    </div>
-                    <div class="flow-option" onclick="selectFlowStep('step1', 'tributario', this)">
-                        <strong>Tributário</strong><br>
-                        <small>Repetição de indébito</small>
-                    </div>
-                    <div class="flow-option" onclick="selectFlowStep('step1', 'geral', this)">
-                        <strong>Geral / LOAS</strong><br>
-                        <small>Outras naturezas</small>
-                    </div>
-                </div>
-                <div id="result-step1" class="flow-result">
-                    <h5>✓ Selecionado!</h5>
-                    <p id="text-step1"></p>
-                </div>
-            </div>
-
-            <!-- Step 2 -->
-            <div class="flow-step">
-                <h4><span class="step-number">2</span> Qual a fase processual?</h4>
-                <div class="flow-options">
-                    <div class="flow-option" onclick="selectFlowStep('step2', 'pre', this)">
-                        <strong>Pré-Requisitório</strong><br>
-                        <small>Até expedição do requisitório</small>
-                    </div>
-                    <div class="flow-option" onclick="selectFlowStep('step2', 'pos', this)">
-                        <strong>Pós-Requisitório</strong><br>
-                        <small>Após expedição</small>
-                    </div>
-                </div>
-                <div id="result-step2" class="flow-result">
-                    <h5>✓ Selecionado!</h5>
-                    <p id="text-step2"></p>
-                </div>
-            </div>
-
-            <!-- Step 3 -->
-            <div class="flow-step">
-                <h4><span class="step-number">3</span> Há parcelas anteriores a dez/2021?</h4>
-                <div class="flow-options">
-                    <div class="flow-option" onclick="selectFlowStep('step3', 'sim', this)">
-                        <strong>Sim</strong><br>
-                        <small>Necessária consolidação</small>
-                    </div>
-                    <div class="flow-option" onclick="selectFlowStep('step3', 'nao', this)">
-                        <strong>Não</strong><br>
-                        <small>Todas as parcelas são posteriores</small>
-                    </div>
-                </div>
-                <div id="result-step3" class="flow-result">
-                    <h5>✓ Selecionado!</h5>
-                    <p id="text-step3"></p>
-                </div>
-            </div>
-
-            <!-- Final Result -->
-            <div id="final-result-flow" class="flow-result" style="display: none; margin-top: 30px; padding: 30px; background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-left-color: #10b981;">
-                <h3 style="color: #047857; margin-bottom: 15px;">📋 Índices Aplicáveis</h3>
-                <div id="final-content-flow"></div>
-            </div>
-        </div>
-
-        <div class="callout info">
-            <div class="callout-title">💡 Dica</div>
-            <p>Clique em cada opção para avançar. Ao final, o sistema mostrará os índices corretos para o seu caso!</p>
-        </div>
-    </section>
-
-    <!-- TAB 12: CHECKLIST -->
-    <section id="tab12" class="tab-content">
-        <h2>12. Checklist de Verificação</h2>
-        <p><em>✓ Seu progresso é salvo automaticamente no seu navegador.</em></p>
-        
-        <h3>Antes de Iniciar</h3>
-        <ul class="checklist" id="checklist1">
-            <li><input type="checkbox" id="c1"> <label for="c1">Verificar data-base do cálculo original (se mera atualização)</label></li>
-            <li><input type="checkbox" id="c2"> <label for="c2">Confirmar natureza do crédito (Previdenciário, Tributário, Geral)</label></li>
-            <li><input type="checkbox" id="c3"> <label for="c3">Verificar se há decisão judicial específica sobre índices</label></li>
-            <li><input type="checkbox" id="c4"> <label for="c4">Identificar termo inicial dos juros (citação, trânsito, evento danoso)</label></li>
-            <li><input type="checkbox" id="c5"> <label for="c5">Verificar existência de pagamentos administrativos (Tema 1.207 STJ)</label></li>
-            <li><input type="checkbox" id="c5b"> <label for="c5b">Identificar tipo de réu (Fazenda Pública ou Não Fazenda)</label></li>
-        </ul>
-
-        <h3>Durante o Cálculo</h3>
-        <ul class="checklist" id="checklist2">
-            <li><input type="checkbox" id="c6"> <label for="c6">Aplicar expurgos inflacionários quando cabíveis (jan/89: 42,72%, fev/89: 10,14%)</label></li>
-            <li><input type="checkbox" id="c7"> <label for="c7">Considerar deflação (índices negativos), mas nunca reduzir valor nominal</label></li>
-            <li><input type="checkbox" id="c8"> <label for="c8">Converter salários-mínimos na data da parcela devida</label></li>
-            <li><input type="checkbox" id="c9"> <label for="c9">Não aplicar correção monetária cumulada com Selic (quando esta engloba)</label></li>
-            <li><input type="checkbox" id="c10"> <label for="c10">Capitalizar Selic de forma SIMPLES (vedada capitalização composta)</label></li>
-            <li><input type="checkbox" id="c11"> <label for="c11">Aplicar Selic no mês POSTERIOR à competência</label></li>
-            <li><input type="checkbox" id="c11b"> <label for="c11b">Se houver parcelas até 12/2021: CONSOLIDAR e separar "Juros até 12/2021" e "Juros Selic"</label></li>
-        </ul>
-
-        <h3>Na Requisição de Pagamento</h3>
-        <ul class="checklist" id="checklist3">
-            <li><input type="checkbox" id="c12"> <label for="c12">Separar "Juros até 12/2021" e "Juros Selic" na planilha</label></li>
-            <li><input type="checkbox" id="c13"> <label for="c13">Verificar prazo constitucional de pagamento (suspensão de juros)</label></li>
-            <li><input type="checkbox" id="c14"> <label for="c14">Calcular requisição complementar se necessário</label></li>
-            <li><input type="checkbox" id="c15"> <label for="c15">Observar teto de RPV/precatório conforme caso</label></li>
-            <li><input type="checkbox" id="c16"> <label for="c16">Verificar se há multa do art. 523, §1º CPC (não incide sobre honorários)</label></li>
-        </ul>
-    </section>
-
-    <!-- TAB 13: MUDANÇAS -->
-    <section id="tab13" class="tab-content">
-        <h2>13. Resumo das Mudanças (EC 136/2025)</h2>
-        
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr><th>Aspecto</th><th>Antes (EC 113/2021)</th><th>Agora (EC 136/2025 + Acórdão)</th></tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Fase regulada</strong></td>
-                        <td>Todo o processo (Dez/21 a Set/25)</td>
-                        <td>Apenas fase PÓS-requisitório</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Fase pré-requisitório</strong></td>
-                        <td>Selic (Tema 1.419 STF)</td>
-                        <td>Código Civil (Arts. 389 e 406)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Correção geral</strong></td>
-                        <td>Selic</td>
-                        <td>IPCA</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Juros geral</strong></td>
-                        <td>Englobados na Selic</td>
-                        <td>Taxa legal (Selic - IPCA)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Previdenciário</strong></td>
-                        <td>Selic</td>
-                        <td>INPC (cor/mon) + (Selic - INPC) (juros)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Tributário</strong></td>
-                        <td>Selic</td>
-                        <td>Selic (mantido - norma especial)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Compensatórios</strong></td>
-                        <td>Absorvidos na Selic</td>
-                        <td>Extintos (não há repristinação)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Desapropriações</strong></td>
-                        <td>Selic (unificada)</td>
-                        <td>IPCA + Taxa Legal (Selic - IPCA)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="callout success">
-            <div class="callout-title">✅ Fundamentos do Acórdão CJF 0882268/2026</div>
-            <ol>
-                <li>Aplicação da norma geral vigente (Código Civil com redação da Lei 14.905/2024)</li>
-                <li>Alinhamento com REsp 2.236.270/SP (STJ, Min. Gurgel de Faria, 26/02/2026)</li>
-                <li>Prevalência de norma especial sobre norma geral (previdenciário e tributário)</li>
-            </ol>
-        </div>
-
-        <div class="callout info">
-            <div class="callout-title">💡 Base Legal Completa</div>
-            <ul>
-                <li>Acórdão CJF 0882268/2026 (Plenário Virtual, 17-19/06/2026)</li>
-                <li>Manual de Orientação de Procedimentos para os Cálculos na Justiça Federal (Resolução CJF nº 963/2025)</li>
-                <li>Emenda Constitucional nº 136/2025</li>
-                <li>Lei nº 14.905/2024 (reforma do Código Civil)</li>
-                <li>REsp nº 2.236.270/SP (STJ, Min. Gurgel de Faria, 26/02/2026)</li>
-                <li>Tema 1.207 STJ (compensação de benefícios administrativos)</li>
-            </ul>
-        </div>
-    </section>
-
-</main>
-
-<!-- FOOTER -->
-<footer>
-    <p>Documento elaborado com base no Acórdão CJF 0882268/2026 e Manual de Cálculos 2025 (Res. CJF 963/2025).</p>
-    <p>Tem natureza de orientação técnica. Prevalece sempre o comando da decisão judicial transitada em julgado.</p>
-    <p style="margin-top: 1rem; font-size: 0.8rem;">© 2026 - Manual Esquematizado de Cálculos | Versão 2.0</p>
-</footer>
-
-<button id="backToTop" title="Voltar ao topo">↑</button>
-
-<script src="script.js"></script>
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(target).classList.add('active');
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
 
 </body>
 </html>
